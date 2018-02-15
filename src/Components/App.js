@@ -17,7 +17,7 @@ class App extends Component {
   }
   apiCall = (day, month, year) => {
     // Request game data for selected date from server
-    axios.get(`http://localhost:8080/games/${day}/${month}/${year}`)
+    axios.get(`/games/${day}/${month}/${year}`)
       .then((res) => {
         if (res.data.message) {
           // Handling if there are no games
