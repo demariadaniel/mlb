@@ -15,6 +15,9 @@ class DateSelector extends Component {
         .toDateString()
     }
   }
+  componentDidMount(){
+    this.apiCall()
+  }
   apiCall=()=>{
     let { day, month, year } = { ...this.state };
     this.props.apiCall(day, (month+1), year)
