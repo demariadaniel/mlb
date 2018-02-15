@@ -80,7 +80,7 @@ class GameDetail extends Component {
                 <div className="col-7">
                   <div className="row">
                     {game.linescore.inning.map((inning, i) => (
-                      <div className="innings col">
+                      <div className="innings col" key={i}>
                         <p><strong>{i + 1}</strong></p>
                         <p>{inning.home}</p>
                         <p>{inning.away}</p>
