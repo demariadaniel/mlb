@@ -37,7 +37,7 @@ class GameDetail extends Component {
   }
   getBatters = (game) => {
     // Scrape relevant player info
-    axios.get(`http://localhost:8080/batters/${game.home_name_abbrev}/${game.away_name_abbrev}/${this.props.match.params.year}`)
+    axios.get(`/batters/${game.home_name_abbrev}/${game.away_name_abbrev}/${this.props.match.params.year}`)
       .then(res => {
         this.setState({
           batters: res.data

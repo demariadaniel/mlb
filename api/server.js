@@ -13,6 +13,8 @@ app.use((req, res, next) => {
     next();
 });
   
+app.use(express.static(__dirname + './../build'))
+
 app.listen(8080, ()=>{
     console.log('listening on port 8080')
 })
@@ -70,3 +72,7 @@ app.get('/batters/:home/:away/:year', (req, res)=>{
     })
   }
 })
+
+app.get('*', (req, res) => {
+  res.sendFile('index.html',{root: __dirname + './../build'});
+});
