@@ -3,6 +3,7 @@ const app = express();
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const cheerio = require('cheerio');
+// Scraping Player Data from https://www.baseball-reference.com/teams/
 
 app.use(bodyParser());
 
@@ -36,10 +37,16 @@ app.get('/games/:day/:month/:year', (req, res)=>{
     })
   })
 
-app.get('/batters', (req, res)=>{
+app.get('/batters/:home/:away/:year', (req, res)=>{
+  console.log(req.params)
   let batters = {home: [], away: []};
   let team = 'home';
-  axios.get('https://www.baseball-reference.com/teams/ARI/2016.shtml#all_team_batting')
+  playerScrape('home');
+  playerScrape('away');
+
+  function playerScrape(team){
+  console.log('scrape')
+  axios.get(`https://www.baseball-reference.com/teams/${req.params[team]}/${req.params.year}.shtml#all_team_batting`)
     .then(scrape=>{
       $ = cheerio.load(scrape.data);
       $('tr').each((i, element)=>{
@@ -52,11 +59,16 @@ app.get('/batters', (req, res)=>{
             rbi: $(element).children("td[data-stat='RBI']").text(), 
             bb: $(element).children("td[data-stat='BB']").text(), 
             so: $(element).children("td[data-stat='SO']").text(), 
-            avg: $(element).children("td[data-stat='AVG']").text()
+            avg: $(element).children("td[data-stat='batting_avg']").text()
           })
-          if (batters[team].length === 8) res.send(batters)
+          console.log('home', batters.home.length)
+          console.log('away', batters.away.length)
         }
       })
+      if (batters.home.length >= 8 && batters.away.length >= 8){ 
+        console.log((batters.home.length, batters.home.length))
+        res.send(batters); 
+      }
     })
-    // res.send('')
+  }
 })

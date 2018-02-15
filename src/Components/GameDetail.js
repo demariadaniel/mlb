@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 
 class GameDetail extends Component {
   constructor() {
     super()
     this.state = {
       currentTeam: "home",
-      batters: {
-        home: [{name: "Ryan", ab: 1, r: 1, h: 1, rbi: 1, bb: 1, so: 1, avg: 1}],
-        away: [{name: "Adam", ab: 0, r: 0, h: 0, rbi: 0, bb: 0, so: 0, avg: 0}]
-      }
+      batters: {home: [], away: []}
     }
   }
   componentDidMount() {
+    console.log('mount')
     // Load game using route if no game data is supplied via props
     const game = this.props.games[parseInt(this.props.match.params.id)];
     if (!game) {
@@ -21,22 +20,56 @@ class GameDetail extends Component {
         this.props.match.params.month,
         this.props.match.params.year
       )
+    } else if (game && this.state.batters.home.length === 0
+      || game && this.state.batters.away.length === 0) {
+        console.log('get batters')
+        this.getBatters(game)
     }
   }
+  componentWillReceiveProps(nextProps) {
+    // Automatically request batters once game data is received
+    const game = nextProps.games[parseInt(nextProps.match.params.id)];
+    if (game && this.state.batters.home.length === 0
+      || game && this.state.batters.away.length === 0) {
+        console.log('will receive')
+      this.getBatters(game)
+    }
+  }
+  getBatters = (game) => {
+    // Scrape relevant player info
+    axios.get(`http://localhost:8080/batters/${game.home_name_abbrev}/${game.away_name_abbrev}/${this.props.match.params.year}`)
+      .then(res => {
+        this.setState({
+          batters: res.data
+        })
+      })
+  }
   teamSwitch = (team) => {
+    // Switch which team's roster you are viewing
     this.setState({
       currentTeam: team
-    }, ()=>{console.log(this.state)})
+    })
   }
   render() {
     const game = this.props.games[parseInt(this.props.match.params.id)];
-    console.log(game)
     return (
       <div className="games container">
+        {/* Home Button */}
         <div className="row ">
           {/* If game is undefined, show loading message */}
           {game ?
             <div className="gameDetail col-12">
+              <div>
+                <Link to="/" className="link">
+                  <button className="btn btn-primary">
+                    Home
+                  </button>
+                </Link>
+                <button className="btn btn-primary"
+                  onClick={()=>this.getBatters(game)}>
+                  <span class="fas fa-sync"></span>
+                </button>
+              </div>
               <div className="row">
                 {/* Innings*/}
                 <div className="col-3">
@@ -77,6 +110,9 @@ class GameDetail extends Component {
               </div>
               {/* Switch Teams */}
               <div className="row">
+                <h5 className="col-12 playerStats">
+                  Player Stats
+                </h5>
                 <div className="col-3 offset-3 teamSwitch"
                   onClick={() => this.teamSwitch('home')}>
                   {game.home_team_city}
@@ -88,59 +124,80 @@ class GameDetail extends Component {
               </div>
               {/* Batters */}
               {/* Mock Data */}
-              {this.state.batters[this.state.currentTeam].map((player,i) => (
+              <div className="row">
+                <div className="col-4">
+                  <p><strong>Name</strong></p>
+                </div>
+                <div className="col-8">
+                  <div className="row">
+                    {/* Optimize using Object.Keys */}
+                    <div className="col">
+                      <p><strong>AB</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>R</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>H</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>RBI</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>BB</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>SO</strong></p>
+                    </div>
+                    <div className="col">
+                      <p><strong>AVG</strong></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {this.state.batters.home.length > 0 && 
+                this.state.batters.away.length > 0 ?
+                this.state.batters[this.state.currentTeam].map((player, i) => (
                 <div className="row" key={i}>
                   <div className="col-4">
-                    <p><strong>Name</strong></p>
                     <p>{player.name}</p>
                   </div>
                   <div className="col-8">
                     <div className="row">
                       {/* Optimize using Object.Keys */}
                       <div className="col">
-                        <p><strong>AB</strong></p>
                         <p>{player.ab}</p>
                       </div>
                       <div className="col">
-                        <p><strong>R</strong></p>
                         <p>{player.r}</p>
                       </div>
                       <div className="col">
-                        <p><strong>H</strong></p>
                         <p>{player.h}</p>
                       </div>
                       <div className="col">
-                        <p><strong>RBI</strong></p>
                         <p>{player.rbi}</p>
                       </div>
                       <div className="col">
-                        <p><strong>BB</strong></p>
                         <p>{player.bb}</p>
                       </div>
                       <div className="col">
-                        <p><strong>SO</strong></p>
                         <p>{player.so}</p>
                       </div>
                       <div className="col">
-                        <p><strong>AVG</strong></p>
                         <p>{player.avg}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                ))
-              }
-              </div>
+              ))
               :
-            <h2 className="col-12"> Loading... </h2>}
-            {/* Loading Message */}
+              <p>Loading...</p>
+              }
             </div>
-          {/* Home Button */ }
-            < Link to="/" className="link">
-          <button className="btn btn-primary" id="home">
-            Home
-          </button>
-        </Link>
+            :
+            <h2 className="col-12"> Loading... </h2>}
+          {/* Loading Message */}
+        </div>
       </div>
     )
   }
