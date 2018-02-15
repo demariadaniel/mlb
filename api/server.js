@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const cheerio = require('cheerio');
 
 app.use(bodyParser());
 
@@ -34,3 +35,7 @@ app.get('/games/:day/:month/:year', (req, res)=>{
       res.status(500).send({message: "There's been an error", err: err.data})
     })
   })
+
+app.get('/batters', (req, res)=>{
+  // ...Scraper for batters
+})
