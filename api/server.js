@@ -37,5 +37,26 @@ app.get('/games/:day/:month/:year', (req, res)=>{
   })
 
 app.get('/batters', (req, res)=>{
-  // ...Scraper for batters
+  let batters = {home: [], away: []};
+  let team = 'home';
+  axios.get('https://www.baseball-reference.com/teams/ARI/2016.shtml#all_team_batting')
+    .then(scrape=>{
+      $ = cheerio.load(scrape.data);
+      $('tr').each((i, element)=>{
+        if (parseInt($(element).children("th[data-stat='ranker']").text()) < 9){
+          batters[team].push({
+            name: $(element).children("td[data-stat='player']").text(),
+            ab: $(element).children("td[data-stat='AB']").text(), 
+            r: $(element).children("td[data-stat='R']").text(), 
+            h: $(element).children("td[data-stat='H']").text(), 
+            rbi: $(element).children("td[data-stat='RBI']").text(), 
+            bb: $(element).children("td[data-stat='BB']").text(), 
+            so: $(element).children("td[data-stat='SO']").text(), 
+            avg: $(element).children("td[data-stat='AVG']").text()
+          })
+          if (batters[team].length === 8) res.send(batters)
+        }
+      })
+    })
+    // res.send('')
 })
