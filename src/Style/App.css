@@ -111,6 +111,16 @@ input[type = number]::-webkit-inner-spin-button {
   right: 90%;
 }
 
+.selected {
+  border: 1px solid gold
+}
+
+.teamSwitch {
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  vertical-align: top;
+}
+
 .textLeft {
   text-align: left
 }

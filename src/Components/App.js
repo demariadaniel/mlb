@@ -34,10 +34,12 @@ class App extends Component {
           let games = Array.isArray(res.data) ?
             res.data : [res.data];
           // Move Blue Jays (or selected team) to position 0
+          // Add a key for CSS usage
           for (let i = 0; i < games.length; i++) {
             if (games[i].home_team_name === "Blue Jays"
               || games[i].away_team_name === "Blue Jays") {
               let blueJayGame = games.splice(i, 1)[0];
+              blueJayGame.isSelected = true;
               games.splice(0, 0, blueJayGame);
               break
             }

@@ -17,7 +17,9 @@ class GamesContainer extends Component {
                   "home" : "away"
               }
               return (
-                <div key={i} className="col-6 game">
+                <div key={i} 
+                  className={game.isSelected ? "col-6 game selected" : "col-6 game" }>
+                {/* Disable link for Cancelled/Postponed games*/}
                   <Link 
                     to={!(game.status.status === "Cancelled" ||
                         game.status.status === "Postponed") ?
@@ -25,6 +27,7 @@ class GamesContainer extends Component {
                         : "/" } 
                     className="link">
                     <div className="row">
+                      {/* Team names and game status */}
                       <div className="col-6 textLeft">
                         <p className={
                           winTeam === "home" ? "winTeam" : ""}>
