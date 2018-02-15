@@ -29,7 +29,7 @@
   color: dodgerblue
 }
 
-.game {
+.game, .gameDetail {
   border-top: 1px solid lightgray;
   border-left: 1px solid lightgray;
   border-radius: 5px;
@@ -68,6 +68,10 @@ input {
 
 input[type = number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+
+.link:hover {
+  text-decoration: none
 }
 
 .postponed {
