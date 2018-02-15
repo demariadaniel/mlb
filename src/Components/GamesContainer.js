@@ -18,7 +18,9 @@ class GamesContainer extends Component {
               }
               return (
                 <div key={i} className="col-6 game">
-                  <Link to={`/game/${i}`}>
+                  <Link 
+                    to={`/game/${game.original_date}/${i}`} 
+                    className="link">
                     <div className="row">
                       <div className="col-6 textLeft">
                         <p className={
@@ -51,7 +53,7 @@ class GamesContainer extends Component {
             )
             :
             <p className="col-12">{this.props.message}</p>
-          } {/* ^^^ If error / no games, display a message instead */}
+          } {/* If error / no games, display a message instead */}
         </div>
         <p className="col-12 results textRight">
           {this.props.games.length} results

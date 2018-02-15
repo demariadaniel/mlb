@@ -64,8 +64,10 @@ class App extends Component {
           <Route path="/" exact render={(props)=>
             <GamesContainer {...this.state} />}
             />
-          <Route path="/game/:id" render={(props)=>
-            <GameDetail {...props} games={this.state.games} />}  
+          <Route path="/game/:year/:month/:day/:id" render={(props)=>
+            <GameDetail {...props} 
+              games={this.state.games} 
+              apiCall={this.apiCall}/>}  
             />
         </Switch>
         <DateSelector apiCall={this.apiCall} />
