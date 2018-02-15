@@ -19,7 +19,10 @@ class GamesContainer extends Component {
               return (
                 <div key={i} className="col-6 game">
                   <Link 
-                    to={`/game/${game.original_date}/${i}`} 
+                    to={!(game.status.status === "Cancelled" ||
+                        game.status.status === "Postponed") ?
+                        `/game/${game.original_date}/${i}`
+                        : "/" } 
                     className="link">
                     <div className="row">
                       <div className="col-6 textLeft">
@@ -49,8 +52,7 @@ class GamesContainer extends Component {
                   </Link>                  
                 </div>
               )
-            }
-            )
+            })
             :
             <p className="col-12">{this.props.message}</p>
           } {/* If error / no games, display a message instead */}

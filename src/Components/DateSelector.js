@@ -38,7 +38,7 @@ class DateSelector extends Component {
       monthName: changeDate.toLocaleString('us', { month: 'short' }),
       year: changeDate.getFullYear(),
       date: changeDate.toDateString()
-    })
+    }, ()=> this.apiCall())
   }
   render(){
     return(
@@ -97,12 +97,6 @@ class DateSelector extends Component {
                 &rsaquo;
             </button>
           </div>
-        <button 
-          className="btn btn-primary" 
-          id="viewGames"
-          onClick={this.apiCall}>
-            View Games
-        </button>
       </div>
     )
   }
