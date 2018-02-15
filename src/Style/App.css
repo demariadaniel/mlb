@@ -20,9 +20,14 @@
   vertical-align: top;
 }
 
+.dates {
+  position: relative;
+  top: 2vh
+}
+
 .dates, .games {
-  height: 40vh;
-  max-height: 40vh;
+  height: 48vh;
+  max-height: 48vh;
 }
 
 .final, .winTeam {
@@ -36,7 +41,7 @@
   padding-top: 7px;
 }
 
-.game:hover {
+.game:hover, .teamSwitch:hover {
   background-color: lightskyblue;
   color: azure;
   cursor: pointer;
@@ -57,6 +62,19 @@ h3, h5 {
   margin-bottom: 0;
 }
 
+#home {
+  position: absolute;
+  top: 85%;
+  left: 95%;
+  transform: translateX(-50%)
+}
+
+.innings {
+  display: inline-block;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 input {
   display: block;
   text-align: center;
@@ -74,13 +92,17 @@ input[type = number]::-webkit-inner-spin-button {
   text-decoration: none
 }
 
+.offset-3.teamSwitch {
+  border-right: 1px solid lightgray
+}
+
 .postponed {
   color: gold
 }
 
 .results {
   position: fixed;
-  top: 40%;
+  top: 5%;
   left: 0%;
 }
 
@@ -95,15 +117,6 @@ input[type = number]::-webkit-inner-spin-button {
 
 .textRight {
   text-align: right
-}
-
-#viewGames {
-  display: block;
-  text-align: center;
-  padding: 0.25rem 0.5rem;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .winTeam {
