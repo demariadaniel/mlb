@@ -6,6 +6,7 @@ import GameDetail from './GameDetail';
 import GamesContainer from './GamesContainer';
 import teamList from '../Utility/teamList';
 import '../Style/App.css';
+console.log(teamList)
 
 class App extends Component {
   constructor() {

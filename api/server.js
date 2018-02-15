@@ -19,6 +19,7 @@ app.listen(8080, ()=>{
 
 app.get('/games/:day/:month/:year', (req, res)=>{ 
     console.log(req.params)
+    // Format params to match API
     let day = req.params.day.length === 1 ? '0'+ req.params.day : req.params.day;
     let month = req.params.month.length === 1 ? '0'+ req.params.month : req.params.month;
     let year = req.params.year;
@@ -38,19 +39,19 @@ app.get('/games/:day/:month/:year', (req, res)=>{
   })
 
 app.get('/batters/:home/:away/:year', (req, res)=>{
-  console.log(req.params)
   let batters = {home: [], away: []};
   let team = 'home';
   playerScrape('home');
   playerScrape('away');
 
   function playerScrape(team){
-  console.log('scrape')
   axios.get(`https://www.baseball-reference.com/teams/${req.params[team]}/${req.params.year}.shtml#all_team_batting`)
     .then(scrape=>{
       $ = cheerio.load(scrape.data);
       $('tr').each((i, element)=>{
+        // if statement limits number of results to only display top players
         if (parseInt($(element).children("th[data-stat='ranker']").text()) < 9){
+          // Populate player arrays
           batters[team].push({
             name: $(element).children("td[data-stat='player']").text(),
             ab: $(element).children("td[data-stat='AB']").text(), 
@@ -61,12 +62,9 @@ app.get('/batters/:home/:away/:year', (req, res)=>{
             so: $(element).children("td[data-stat='SO']").text(), 
             avg: $(element).children("td[data-stat='batting_avg']").text()
           })
-          console.log('home', batters.home.length)
-          console.log('away', batters.away.length)
         }
       })
       if (batters.home.length >= 8 && batters.away.length >= 8){ 
-        console.log((batters.home.length, batters.home.length))
         res.send(batters); 
       }
     })

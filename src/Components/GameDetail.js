@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class GameDetail extends Component {
@@ -20,8 +20,8 @@ class GameDetail extends Component {
         this.props.match.params.month,
         this.props.match.params.year
       )
-    } else if (game && this.state.batters.home.length === 0
-      || game && this.state.batters.away.length === 0) {
+    } else if ((game && this.state.batters.home.length === 0)
+      || (game && this.state.batters.away.length === 0)) {
         console.log('get batters')
         this.getBatters(game)
     }
@@ -29,8 +29,8 @@ class GameDetail extends Component {
   componentWillReceiveProps(nextProps) {
     // Automatically request batters once game data is received
     const game = nextProps.games[parseInt(nextProps.match.params.id)];
-    if (game && this.state.batters.home.length === 0
-      || game && this.state.batters.away.length === 0) {
+    if ((game && this.state.batters.home.length === 0)
+      || (game && this.state.batters.away.length === 0)) {
         console.log('will receive')
       this.getBatters(game)
     }
@@ -123,14 +123,13 @@ class GameDetail extends Component {
                 </div>
               </div>
               {/* Batters */}
-              {/* Mock Data */}
               <div className="row">
                 <div className="col-4">
                   <p><strong>Name</strong></p>
                 </div>
                 <div className="col-8">
                   <div className="row">
-                    {/* Optimize using Object.Keys */}
+                    {/* Player Headings */}
                     <div className="col">
                       <p><strong>AB</strong></p>
                     </div>
@@ -164,28 +163,15 @@ class GameDetail extends Component {
                   </div>
                   <div className="col-8">
                     <div className="row">
-                      {/* Optimize using Object.Keys */}
-                      <div className="col">
-                        <p>{player.ab}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.r}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.h}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.rbi}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.bb}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.so}</p>
-                      </div>
-                      <div className="col">
-                        <p>{player.avg}</p>
-                      </div>
+                      {/* Player Stats */}
+                      {Object.keys({...player})
+                        .filter(key=>!(key === "name"))
+                        .map((key)=>(
+                          <div className="col">
+                            <p>{player[key]}</p>
+                          </div>
+                        ))
+                      }
                     </div>
                   </div>
                 </div>
