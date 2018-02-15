@@ -67,7 +67,7 @@ class GameDetail extends Component {
                 </Link>
                 <button className="btn btn-primary"
                   onClick={()=>this.getBatters(game)}>
-                  <span class="fas fa-sync"></span>
+                  <span className="fas fa-sync"></span>
                 </button>
               </div>
               <div className="row">
@@ -167,7 +167,7 @@ class GameDetail extends Component {
                       {Object.keys({...player})
                         .filter(key=>!(key === "name"))
                         .map((key)=>(
-                          <div className="col">
+                          <div className="col" key={key}>
                             <p>{player[key]}</p>
                           </div>
                         ))
